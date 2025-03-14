@@ -6,7 +6,8 @@ register() {
     read -p "Email: " email
     read -p "Username: " username
     read -sp "Password: " password
-    echo ./register.sh "$email" "$username" "$password"
+    echo
+    ./register.sh "$email" "$username" "$password"
 }
 
 # Fungsi untuk login
@@ -14,14 +15,16 @@ login() {
     echo -e "\n=== LOGIN PLAYER ==="
     read -p "Email: " email
     read -sp "Password: " password
-    echo ./login.sh "$email" "$password"
+    echo
+    ./login.sh "$email" "$password"
 }
 
 delete() {
     echo -e ""
     read -p "Email: " email
     read -sp "Password: " password
-    echo ./delete.sh "$email" "password"
+    echo
+    ./delete.sh "$email" "password"
 }
 # Menu utama
 while true; do
