@@ -29,11 +29,12 @@ fi
 # Main Script Logic
 
 if [ "$2" == "--info" ]; then
+    echo ""
     echo "Summary of $1"
     highest_usage=$(awk -F, 'NR>1 {print $1, $2}' $1 | sort -k2 -nr | head -n 1)
-    highest_raw=$(awk -F, 'NR>1 {print $1, $3}' $1 | sort -k2 -nr | head -n 1)
-    echo "Highest Adjusted Usage: $highest_usage"
-    echo "Highest Raw Usage: $highest_raw"
+    highest_raw=$(awk -F, 'NR>1 {print $1, $3}' $1 | sort -k3 -nr | head -n 1)
+    echo -e "Highest Adjusted Usage: \e[32m$highest_usage\e[0m"
+    echo -e "Highest Raw Usage: \e[32m$highest_raw"
 fi
 
 # Column Maker
@@ -105,9 +106,9 @@ if [ "$2" == "--filter" ]; then
   fi
     type=$3
     echo ""
-    echo "Pokemon,Usage%,RawUsage,Type1,Type2,HP,Atk,Def,SpAtk,SpDef,Speed"
     if awk -F, -v tipe="$type" '$4 == tipe || $5 == tipe' "$1" | grep -q .; then
-       awk -F, '($4 == tipe || $5 == tipe)' "$1" | sort -t, -k2 -nr
+       echo "Pokemon,Usage%,RawUsage,Type1,Type2,HP,Atk,Def,SpAtk,SpDef,Speed"
+       awk -F, -v tipe="$type" '($4 == tipe || $5 == tipe)' "$1" | sort -t, -k2 -nr
     else
        echo -e "\e[31mType \e[36m$3 \e[31mnot found"
     fi

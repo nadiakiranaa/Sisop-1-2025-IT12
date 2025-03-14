@@ -2,7 +2,7 @@
 #register.sh
 
 # Static salt untuk hashing
-SALT="arcaea_salt_etern1ty"
+SALT="NHK_ArcadiaSalty"
 
 # Validasi jumlah argumen
 if [ $# -ne 3 ]; then

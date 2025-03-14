@@ -1,14 +1,9 @@
 #!/bin/bash
-#login.sh
+#delete.sh
 
 # Static salt untuk hashing
 SALT="NKH_ArcadiaSalty"
 
-# Validasi jumlah argumen
-if [ $# -ne 2 ]; then
-    echo "Usage: ./login.sh <email> <password>"
-    exit 1
-fi
 
 email=$1
 password=$2
@@ -33,7 +28,8 @@ input_hash=$(echo -n "${password}${SALT}" | sha256sum | cut -d ' ' -f1)
 
 # Bandingkan hash
 if [ "$input_hash" == "$stored_hash" ]; then
-    echo "Login successful! Welcome to Arcaea!"
+    echo sed -i '/$email/d' /data/player.csv
+    echo "Delete successful!"
 else
-    echo "Login failed: Invalid credentials!"
+    echo "Delete failed: Invalid credentials!"
 fi
