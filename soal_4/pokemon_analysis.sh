@@ -100,7 +100,6 @@ fi
 if [ "$2" == "--filter" ]; then
   if [ -z "$3" ]; then
     echo " "
-    echo "Pokemon,Usage%,RawUsage,Type1,Type2,HP,Atk,Def,SpAtk,SpDef,Speed"
     echo -e "\e[31mError: Argument is empty."
     exit 1
   fi
