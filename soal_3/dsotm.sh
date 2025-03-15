@@ -5,7 +5,7 @@ function speak_to_me() {
     while true; do
         affirmation=$(curl -s https://www.affirmations.dev | jq -r '.affirmation')
         echo "$affirmation"
-        sleep 2
+        sleep 1
     done
 }
 
@@ -13,22 +13,24 @@ function speak_to_me() {
 function on_the_run() {
     echo "Ready, set, go!"
     local progress=0
-    local bar_length=100
+    local cols=$(tput cols)
+    local bar_length=$((cols - 10))
 
-    while [ $progress -lt 100 ]; do
-        sleep_time=$(awk -v min=0.1 -v max=1 'BEGIN{srand(); print min+rand()*(max-min)}')
+    while (( progress < 100 )); do
+        sleep_time=$(echo "scale=2; 0.1 + ($RANDOM % 90) / 100" | bc)
         sleep "$sleep_time"
-        progress=$((progress + RANDOM % 10 + 1))
-        if [ $progress -gt 100 ]; then
-            progress=100
-        fi
 
-        filled=$((progress * bar_length / 100))
-        empty=$((bar_length - filled))
-        bar=$(printf "%-${filled}s" "#" | tr ' ' '#')
-        spaces=$(printf "%-${empty}s" " ")
+        (( progress += RANDOM % 10 + 1 ))
+        (( progress > 100 )) && progress=100
 
-        echo -ne "\r [${bar}${spaces}] ${progress}%"
+        local filled=$((progress * bar_length / 100))
+        local empty=$((bar_length - filled))
+
+
+        local bar_filled=$(printf '%0.s>' $(seq 1 $filled))
+        local bar_empty=$(printf '%0.s░' $(seq 1 $empty))
+
+        echo -ne "\r\033[1;32m${bar_filled}\033[1;31m${bar_empty}\033[0m ${progress}% (${remaining_time}s)"
     done
     echo -e "\nDone!\n"
 }
@@ -46,7 +48,7 @@ function show_time() {
 function test() {
         trap "tput cnorm; exit" SIGINT
         while true; do
-        unimatrix -u '$ € £ ¥ ¢ ₹ ₩ ₿ ₣ ₽ ¤ ₱ ₦ ƒ ₮ ௹ ฿ ៛ ₪ ₫'
+        unimatrix -a -b -c blue -g black -u '$ ﷼  € £ ¥ ¢ ₹ ₩ ₿ ₣ ₽ ¤ ₱ ₦ ƒ ₮ ௹ ฿ ៛ ₪ ₫'
         sleep 1
         done
 }
@@ -58,7 +60,7 @@ function brain_damage() {
         clear
         echo "Task Manager"
         ps aux --sort=-%mem | head -10
-        sleep 2
+        sleep 1
     done
 }
 
