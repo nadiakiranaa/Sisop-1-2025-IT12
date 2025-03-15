@@ -16,7 +16,7 @@ password=$3
 
 # Validasi format email
 if [[ ! "$email" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
-    echo "Invalid email format! Must contain @ and domain."
+    echo "Registration Failed: Invalid email format! Must contain @ and domain."
     exit 1
 fi
 
@@ -30,7 +30,7 @@ if [[ ${#password} -lt 8 ]] ||
 fi
 
 # Cek keberadaan email di database
-if [ -f "/data/player.csv" ] && grep -q "^$email," "/data/player.csv"; then
+if [ -f "data/player.csv" ] && grep -q "^$email," "data/player.csv"; then
     echo "Email already registered!"
     exit 1
 fi
@@ -39,5 +39,5 @@ fi
 hashed_pw=$(echo -n "${password}${SALT}" | sha256sum | cut -d ' ' -f1)
 
 # Simpan ke database
-echo "$email,$username,$hashed_pw" >> /data/player.csv
+echo "$email,$username,$hashed_pw" >> data/player.csv
 echo "Registration successful for $username!"
