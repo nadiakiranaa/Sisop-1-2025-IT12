@@ -60,23 +60,23 @@ if [ "$2" == "--sort" ]; then
         "POKEMON") sort_column=1 ;;
         "Name") sort_column=1 ;;
         "NAME") sort_column=1 ;;
-        "hp") sort_column=4 ;;
-        "HP") sort_column=4 ;;
-        "Hp") sort_column=4 ;;
-        "atk") sort_column=5 ;;
-        "Atk") sort_column=5 ;;
-        "ATK") sort_column=5 ;;
-        "def") sort_column=6 ;;
-        "spatk") sort_column=7 ;;
-        "spdef") sort_column=8 ;;
-        "speed") sort_column=9 ;;
+        "hp") sort_column=6 ;;
+        "HP") sort_column=6 ;;
+        "Hp") sort_column=6 ;;
+        "atk") sort_column=7 ;;
+        "Atk") sort_column=7 ;;
+        "ATK") sort_column=7 ;;
+        "def") sort_column=8 ;;
+        "spatk") sort_column=9 ;;
+        "spdef") sort_column=10 ;;
+        "speed") sort_column=11 ;;
         *) echo -e "\e[31mColumn \e[36m$3 \e[31minvalid!"; exit 1 ;;
     esac
     echo "Pokemon,Usage%,RawUsage,Type1,Type2,HP,Atk,Def,SpAtk,SpDef,Speed"
     if [ "$sort_column" -eq 1 ]; then
     awk -F, 'NR>1' "$1" | sort -t, -k$sort_column
     else
-    awk -F, 'NR>1' "$1" | sort -t, -k$sort_column -nr  
+    awk -F, 'NR>1' "$1" | sort -t, -k{$sort_column},${sort_column} -nr  
  fi
 fi
 
