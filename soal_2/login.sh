@@ -14,19 +14,19 @@ email=$1
 password=$2
 
 # Validasi keberadaan database
-if [ ! -f "data/player.csv" ]; then
+if [ ! -f "/data/player.csv" ]; then
     echo "Login failed: No registered players!"
     exit 1
 fi
 
 # Cek keberadaan email
-if ! grep -q "^$email," "data/player.csv"; then
+if ! grep -q "^$email," "/data/player.csv"; then
     echo "Login failed: Email not found!"
     exit 1
 fi
 
 # Ekstrak hash dari database
-stored_hash=$(grep "^$email," "data/player.csv" | cut -d ',' -f3)
+stored_hash=$(grep "^$email," "/data/player.csv" | cut -d ',' -f3)
 
 # Hash password input
 input_hash=$(echo -n "${password}${SALT}" | sha256sum | cut -d ' ' -f1)

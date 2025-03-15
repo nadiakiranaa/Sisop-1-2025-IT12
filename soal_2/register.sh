@@ -39,5 +39,5 @@ fi
 hashed_pw=$(echo -n "${password}${SALT}" | sha256sum | cut -d ' ' -f1)
 
 # Simpan ke database
-echo "$email,$username,$hashed_pw" >> data/player.csv
+echo "$email,$username,$hashed_pw" >> /data/player.csv
 echo "Registration successful for $username!"
