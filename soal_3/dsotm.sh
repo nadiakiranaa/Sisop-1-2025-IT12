@@ -28,7 +28,7 @@ function on_the_run() {
 
 
         local bar_filled=$(printf '%0.s>' $(seq 1 $filled))
-        local bar_empty=$(printf '%0.s░' $(seq 1 $empty))
+        local bar_empty=$(printf '%0.s ' $(seq 1 $empty))
 
         echo -ne "\r\033[1;32m${bar_filled}\033[1;31m${bar_empty}\033[0m ${progress}% (${remaining_time}s)"
     done
