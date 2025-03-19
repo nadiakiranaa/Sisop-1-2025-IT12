@@ -15,7 +15,105 @@
 kasih penjelasan disini..
 
 ## Soal-2
-kasih penjelasan disini..
+### A. “First Step in a New World”
+--
+### B. “Radiant Genesis”
+--
+### C. “Unceasing Spirit”
+--
+### D. “The Eternal Realm of Light”
+--
+### E. “The Brutality of Glass”
+pada soal ini kita diminta untuk membuat program dimana kita dapat melacak penggunaan cpu(dalam percent) serta cpu model,
+```
+TIME=$(date +"%Y-%m-%d %H:%M:%S")
+CPUU=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}')
+CPUM=$(lscpu | grep -m1 "Model name" | cut -d ':' -f2 | sed 's/^ *//')
+
+echo "[$TIME] - Core Usage [$CPUU%] - Terminal Model [$CPUM]"
+```
+Dimana ```TIME=$(date +"%Y-%m-%d %H:%M:%S")``` mengambil waktu saat ini dalam format YYYY-MM-DD HH:MM:SS. ```top -bn1``` menjalankan top dalam mode batch (-b) hanya dnegan satu iterasi (-n1). ```grep Cpu(s)```berfungsi untuk menemukan baris yang berisi info CPU. ```awk '{print 100 - $8}'``` menghitung penggunaan CPU dengan rumus 100 - idle CPU ($8).
+### F. “In Grief and Great Delight”
+pada soal yang ini, kita membuat program untuk melacak percent usage RAM dan pengggunaan nya RAM saat ini, serta memastikan sudah sesuai dengan package resource checker yang ada(top, htop, btop), 
+```
+TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
+
+# Ambil nilai RAM Total dan RAM Available dalam KB
+RAM_TOTAL_KB=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+RAM_AVAILABLE_KB=$(grep MemAvailable /proc/meminfo | awk '{print $2}')
+
+# Konversi ke MB
+RAM_TOTAL=$((RAM_TOTAL_KB / 1024))
+RAM_AVAILABLE=$((RAM_AVAILABLE_KB / 1024))
+RAM_USED=$((RAM_TOTAL - RAM_AVAILABLE))
+
+# Hitung persentase penggunaan RAM
+RAM_PERCENTAGE=$(awk "BEGIN {printf \"%.2f\", ($RAM_USED / $RAM_TOTAL) * 100}")
+
+echo "[$TIMESTAMP] - Fragment Usage [$RAM_PERCENTAGE%] - Fragment Count [$RAM_USED MB] - Details [Total: $RAM_TOTAL MB, Available: $RAM_AVAILABLE MB]"
+```
+```grep MemTotal``` digunakan untuk mengambil total RAM dalam satuan KB, ```/proc/meminfo``` berisi informasi tentang penggunaan RAM. Kemudian ```awk '{print $2}'``` digunakan untuk mengekstrak kolom kedua dari suatu output teks yang diproses oleh ```awk```. ```printf "%.2f"``` memastikan hasilnya memiliki dua angka di belakang koma.
+### G. “On Fate's Approach”
+Pada soal ini, kita disuruh untuk buat suatu menu(Crontab Manager) yang mempunyai fungsi menambah maupun menghapus CPU/RAM serta melihat Active Jobs yang sedang berjalan, contoh terminal nya seperti ini : 
+```echo "======================"
+    echo "   ARCAEA TERMINAL   "
+    echo "======================"
+    echo "1) Add CPU - Core Monitor to Crontab"
+    echo "2) Add RAM - Fragment Monitor to Crontab"
+    echo "3) Remove CPU - Core Monitor from Crontab"
+    echo "4) Remove RAM - Fragment Monitor from Crontab"
+    echo "5) View All Scheduled Monitoring Jobs"
+    echo "6) Exit Arcaea Terminal"
+    echo "======================"
+    read -p "Enter option [1-6]: " choice
+
+    case $choice in
+        1) add_cpu_monitor ;;
+        2) add_ram_monitor ;;
+        3) rm_cpu_monitor ;;
+        4) rm_ram_monitor ;;
+        5) view_active_job ;;
+        6) echo "Keluar ArCaea Terminal."
+           exit 0 
+	   ;;
+        *) echo "Invalid option!"
+	   ;;
+    esac
+done
+```
+kita tambahkan fungsi yang sesuai dengan yang ada di menu crontab tersebut ygy,
+```
+add_cpu_monitor(){
+(crontab -l 2>/dev/null; echo "* * * * * $CORE_SCRIPT") | crontab -
+echo "CPU monitoring added to crontab."
+}
+
+add_ram_monitor(){
+(crontab -l 2>/dev/null; echo "* * * * * $FRAG_SCRIPT") | crontab -
+echo "RAM monitoring added to crontab."
+}
+
+rm_cpu_monitor(){
+crontab -l 2>/dev/null | grep -v "$CORE_SCRIPT" | crontab -
+echo "CPU monitoring removed from corntab."
+}
+
+rm_ram_monitor(){
+crontab -l 2>/dev/null | grep -v "$FRAG_SCRIPT" | crontab -
+echo "RAM monitoring removed from corntab."
+}
+
+view_active_job(){
+echo "Scheduled Jobs B**:"
+crontab -l 2>/dev/null | grep "$CORE_SCRIPT\|$FRAG_SCRIPT" || echo "Tidak ada monitoring yang aktif sir"
+}
+```
+```crontab -l``` berguna untuk menampilkan daftar tugas yang sudah ada dalam crontab sedangkan ```2>/dev/null``` untuk menyembunyikan error jika crontab kosong. kemudian menambahkan baris baru ```"* * * * * $CORE_SCRIPT"```, yang artinya menjalankan script setiap menit. output tersebut dikirim ke ```corntab -```, sehingga memeperbarui crontab yang ada. ```grep -v``` berarti mencari semua baris kecuali yang mengandung suatu kata tersbut.
+### H. “The Disfigured Flow of Time”
+kemudian setelah kita membuat crontab manager, kita tambahkan 2 log file (core.log dan fragment.log) di folder ```./log/``` untuk menghubungkan ke prgram usage monitorinng kita tadi. didapatkan output sebagai berikut, 
+![Screenshot 2025-03-20 045316](https://github.com/user-attachments/assets/94836556-7430-4e8f-a112-0e8fd3cf5a9a)
+### I. “Irruption of New Color”
+--
 
 ## Soal-3
 Pada soal ini kita diberikan 5 bentuk program yakni, "Speak to Me", "On the Run", "Time", "Money", dan "Brain Damage".
@@ -62,7 +160,6 @@ function speak_to_me() {
 }
 ```
 fungsi ```speak_to_me``` akan terus berjalan selamanya kita tidak menghentikan program, sedangkan ```curl -s``` akan mengambil data dari situs yang ada dan tidak menambahkan informasi tambahan. Kemudian ```jq -r``` adalah alat untuk memproses JSON, dimana kita hanya mengambil di bagian "affirmation". baris berikutnya ```echo``` berfungsi untuk menampilkan kutipan yang didapat dan ```sleep``` untuk menunggu proses sebelum menjalankannya lagi.                              
-![Screenshot 2025-03-20 014734](https://github.com/user-attachments/assets/59a210be-6ba1-47dd-ab00-a2479fcf85b9)
 ### B. Fungsi "On the Run"
 Membuat sebuah progress bar yang berjalan dengan interval random
 ```
@@ -92,7 +189,6 @@ function on_the_run() {
 }
 ```
 Script tersebut akan menjalankan sebuah bar progress dengan interval random, dimana ```tput cols``` untuk mengambil jumlah kolom di terminal dan ```bar_length``` untuk menentukan panjang pregress bar. Script ini akan terus berjalan selama progressnya kurang dari 100. ```$RANDOM``` adalah variabel bawaan bash yang dapat menghasilkan angka acak kemudian kita ambil sisa pembagian yang berkisar 0-89 dengan ```% 90```. Lalu ```bc``` disini digunakan untuk perhitungan float(command-line) dan memastikan bahwa hasilnya memiliki 2 angka dibelakang koma. ```%0.s>``` berfungsi untuk mencetak hanya karakter ">". ```\033[``` adalah kode escape ANSI untuk mengubah warna teks di terminal. ```1;32m``` berarti hijau terang (1 = bold, 32 = hijau). 
-![Screenshot 2025-03-20 014227](https://github.com/user-attachments/assets/67c73688-581a-4dea-abe8-87de4cee72b7)
 ### C. Fungsi "Time"
 Membuat fungsi yang dapat menampilkan live clock yang menunjukkan waktu setiap saat, singkat saja :
 ```
@@ -105,7 +201,6 @@ function show_time() {
 }
 ```
 date ```'+%Y-%m-%d %H:%M:%S'``` digunakan untuk menampilkan waktu dalam format YYYY-MM-DD HH:MM:SS. serta ```sleep 1``` untuk memperbarui tiap 1 detik.            
-![Screenshot 2025-03-20 014356](https://github.com/user-attachments/assets/b3e6dbc1-9a79-4477-becd-8c9be148d04c)
 ### D. Fungsi "Money"
 Membuat sebuah program yang "mirip" dengan "cmatrix" dengan modifikasi simbol berupa mata uang
 ```
@@ -132,7 +227,6 @@ function brain_damage() {
 }
 ```
 script tersebut akan terus mengambil data terbaru dari proses yang sedang berjalan di terminal kita. ```ps aux``` untuk menampilkan semua daftar proses yang sedang berjalan, ```--sort=-%mem``` berarti mengurutkan hasil berdasarkan kolom %MEM dalam urutan menurun (terbesar ke terkecil). kemudian hanya menampilkan 10 baris pertama dari ps aux dengan ```head -10```
-![Screenshot 2025-03-20 014544](https://github.com/user-attachments/assets/efb92d28-f789-45c5-ae24-fbe714358e21)
 soal-3 done sir
 ## Soal-4
 kasih penjelasan disini..
