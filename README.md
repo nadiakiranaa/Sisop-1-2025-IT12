@@ -19,7 +19,7 @@ kasih penjelasan disini..
 
 ## Soal-3
 Pada soal ini kita diberikan 5 bentuk program yakni, "Speak to Me", "On the Run", "Time", "Money", dan "Brain Damage".
-Pertama kita perlu membuat sebuah file dsotm.sh yang dapat menampung semua fungsi dari program diatas, 
+Pertama kita perlu membuat sebuah file dsotm.sh yang dapat menampung semua fungsi dari program diatas, pada awal script ini terdapat ```clear``` untuk memastikan bahwa setelah menjalankan program ini, terminal selalu dibersihkan agar tampilan lebih rapi,
 ```
 clear
 case "$1" in
@@ -49,8 +49,9 @@ exit 1
 
 esac
 ```
+
 ### A. Fungsi "Speak to Me"
-Membuat fungsi untuk memanggil API yang menampilkan word of affirmation di tiap detiknya
+Membuat fungsi untuk memanggil API yang menampilkan word of affirmation di tiap detiknya,
 ```
 function speak_to_me() {
     while true; do
@@ -60,6 +61,8 @@ function speak_to_me() {
     done
 }
 ```
+fungsi ```speak_to_me``` akan terus berjalan selamanya kita tidak menghentikan program, sedangkan ```curl -s``` akan mengambil data dari situs yang ada dan tidak menambahkan informasi tambahan. Kemudian ```jq -r``` adalah alat untuk memproses JSON, dimana kita hanya mengambil di bagian "affirmation". baris berikutnya ```echo``` berfungsi untuk menampilkan kutipan yang didapat dan ```sleep``` untuk menunggu proses sebelum menjalankannya lagi.                              
+![Screenshot 2025-03-20 014734](https://github.com/user-attachments/assets/59a210be-6ba1-47dd-ab00-a2479fcf85b9)
 ### B. Fungsi "On the Run"
 Membuat sebuah progress bar yang berjalan dengan interval random
 ```
@@ -88,7 +91,8 @@ function on_the_run() {
     echo -e "\nDone!\n"
 }
 ```
-Script tersebut akan menjalankan sebuah bar progress dengan interval random
+Script tersebut akan menjalankan sebuah bar progress dengan interval random, dimana ```tput cols``` untuk mengambil jumlah kolom di terminal dan ```bar_length``` untuk menentukan panjang pregress bar. Script ini akan terus berjalan selama progressnya kurang dari 100. ```$RANDOM``` adalah variabel bawaan bash yang dapat menghasilkan angka acak kemudian kita ambil sisa pembagian yang berkisar 0-89 dengan ```% 90```. Lalu ```bc``` disini digunakan untuk perhitungan float(command-line) dan memastikan bahwa hasilnya memiliki 2 angka dibelakang koma. ```%0.s>``` berfungsi untuk mencetak hanya karakter ">". ```\033[``` adalah kode escape ANSI untuk mengubah warna teks di terminal. ```1;32m``` berarti hijau terang (1 = bold, 32 = hijau). 
+![Screenshot 2025-03-20 014227](https://github.com/user-attachments/assets/67c73688-581a-4dea-abe8-87de4cee72b7)
 ### C. Fungsi "Time"
 Membuat fungsi yang dapat menampilkan live clock yang menunjukkan waktu setiap saat, singkat saja :
 ```
@@ -100,6 +104,8 @@ function show_time() {
     done
 }
 ```
+date ```'+%Y-%m-%d %H:%M:%S'``` digunakan untuk menampilkan waktu dalam format YYYY-MM-DD HH:MM:SS. serta ```sleep 1``` untuk memperbarui tiap 1 detik.            
+![Screenshot 2025-03-20 014356](https://github.com/user-attachments/assets/b3e6dbc1-9a79-4477-becd-8c9be148d04c)
 ### D. Fungsi "Money"
 Membuat sebuah program yang "mirip" dengan "cmatrix" dengan modifikasi simbol berupa mata uang
 ```
@@ -111,7 +117,8 @@ function test() {
         done
 }
 ```
-menggunakan unimatrix, dimana fungsi ini sangat mudah untuk dimodifikasi output nya
+menggunakan unimatrix, dimana fungsi ini sangat mudah untuk dimodifikasi output nya. ```trap``` adalah perintah bawaan Bash untuk menangani sinyal (signals) sedangkan SIGNIT adlah sinyal yang dikirim ketika menekan ctrl+c. setelah pengguna menekan ctrl+c ```tput cnorm``` mengembalikan tampilan kursor ke normal kemudian menghentikan program dengan ```quit```. Untuk simbol di dalam script unimatrix ```-a``` Asynchronous scroll. Lines will move at varied speeds. ```-b``` Use only bold characters. ```-c``` color. ```-g``` background color. ```-u``` custom-characters.
+![Screenshot 2025-03-20 014450](https://github.com/user-attachments/assets/5d968592-799f-497f-a6df-922cdf0b0a18)
 ### E. Fungsi "Brain Damage"
 Membuat sebuah program yang dapat menampilkan proses yang sedang berjalan di dalam terminal dan diperbarui tiap detiknya
 ```
@@ -124,7 +131,8 @@ function brain_damage() {
     done
 }
 ```
-script tersebut akan terus mengambil data terbaru dari proses yang sedang berjalan di terminal kita
+script tersebut akan terus mengambil data terbaru dari proses yang sedang berjalan di terminal kita. ```ps aux``` untuk menampilkan semua daftar proses yang sedang berjalan, ```--sort=-%mem``` berarti mengurutkan hasil berdasarkan kolom %MEM dalam urutan menurun (terbesar ke terkecil). kemudian hanya menampilkan 10 baris pertama dari ps aux dengan ```head -10```
+![Screenshot 2025-03-20 014544](https://github.com/user-attachments/assets/efb92d28-f789-45c5-ae24-fbe714358e21)
 soal-3 done sir
 ## Soal-4
 kasih penjelasan disini..
