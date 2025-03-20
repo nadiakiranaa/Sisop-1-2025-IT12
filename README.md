@@ -12,7 +12,36 @@
 ## PENJELASAN
 
 ## Soal-1
-kasih penjelasan disini..
+### A. Membuat direktori && memasukkan ke direktori
+```
+mkdir soal_1 && cd soal_1
+```
+## B. Membuat File poppo_siroyo.sh
+```
+nano poppo_siroyo.sh
+```
+### C. Menjalankan script
+```
+./nano poopo_siroyo.sh
+```
+### D. Izin execute pada script
+```
+chmod +x poppo_siroyo.sh
+```
+### E. Menjalakan script kembali
+```
+./poppo_siroyo.sh
+```
+### D. Melihat isi file CSV
+```
+more reading_data.csv
+```
+### Menggunakan Strings dan grep untuk mencari data. Menampilkan semua string yang dapat dibaca dari file reading_data.csv kemudian menyaring output untuk mencari baris yang mengandung nama "Chris Hemsworth".
+```
+strings reading_data.csv |grep "Chris Hemsworth"
+```
+### Menunjukkan jumlah buku-buku yang dibaca oleh Chris Hemsworth.
+```
 
 ## Soal-2
 ### A. “First Step in a New World”
