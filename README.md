@@ -28,19 +28,19 @@ C. Menjalankan script
 ```
 chmod +x poppo_siroyo.sh
 ```
-E. Menjalakan script kembali
+F. Menjalakan script kembali
 ```
 ./poppo_siroyo.sh
 ```
-D. Melihat isi file CSV
+G. Melihat isi file CSV
 ```
 more reading_data.csv
 ```
-### Menggunakan Strings dan grep untuk mencari data. Menampilkan semua string yang dapat dibaca dari file reading_data.csv kemudian menyaring output untuk mencari baris yang mengandung nama "Chris Hemsworth".
+H.Menggunakan Strings dan grep untuk mencari data. Menampilkan semua string yang dapat dibaca dari file reading_data.csv kemudian menyaring output untuk mencari baris yang mengandung nama "Chris Hemsworth".
 ```
-strings reading_data.csv |grep "Chris Hemsworth"
+I.strings reading_data.csv |grep "Chris Hemsworth"
 ```
-### Menunjukkan jumlah buku-buku yang dibaca oleh Chris Hemsworth.
+J. Menunjukkan jumlah buku-buku yang dibaca oleh Chris Hemsworth.
 ```
 
 ## Soal-2
