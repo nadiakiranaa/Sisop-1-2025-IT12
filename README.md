@@ -44,13 +44,45 @@ J. Menunjukkan jumlah buku-buku yang dibaca oleh Chris Hemsworth.
 
 ## Soal-2
 ### A. “First Step in a New World”
---
+Menggunakan conditional statement ```$# -ne 3``` untuk mengecek apakah jumlah parameter sama dengan 3
+Parameter register yaitu email, username, dan password
+```
+ if [ $# -ne 3 ]; then
+    echo "Usage: ./register.sh <email> <username> <password>"
+    exit 1
+fi
+```
+Mengecek parameter untuk login
+```
+if [ $# -ne 2 ]; then
+    echo "Usage: ./login.sh <email> <password>"
+    exit 1
+fi
+```
 ### B. “Radiant Genesis”
---
+```
+if [[ ${#password} -lt 8 ]] ||
+   [[ ! "$password" =~ [A-Z] ]] ||
+   [[ ! "$password" =~ [a-z] ]] ||
+   [[ ! "$password" =~ [0-9] ]]; then
+    echo "Password must have: 8+ chars, 1 uppercase, 1 lowercase, 1 digit!"
+    exit 1
+fi
+```
 ### C. “Unceasing Spirit”
---
+```
+if [ -f "data/player.csv" ] && grep -q "^$email," "data/player.csv"; then
+    echo "Email already registered!"
+    exit 1
+fi
+```
+Mengecek dalam data/player.csv apakah terdapat email yang sama menggunakan ```grep```
 ### D. “The Eternal Realm of Light”
---
+Salt dideklarasikan dengan kata bebas lalu digunakan dalam pembuatan password yang digabung dengan ```sha256sum``` yang akan membuat password acak dan disimpan dalam variabel hashed_pw
+```
+SALT="NHK_ArcadiaSalty"
+hashed_pw=$(echo -n "${password}${SALT}" | sha256sum | cut -d ' ' -f1)
+```
 ### E. “The Brutality of Glass”
 pada soal ini kita diminta untuk membuat program dimana kita dapat melacak penggunaan cpu(dalam percent) serta cpu model,
 ```
@@ -303,4 +335,115 @@ function brain_damage() {
 script tersebut akan terus mengambil data terbaru dari proses yang sedang berjalan di terminal kita. ```ps aux``` untuk menampilkan semua daftar proses yang sedang berjalan, ```--sort=-%mem``` berarti mengurutkan hasil berdasarkan kolom %MEM dalam urutan menurun (terbesar ke terkecil). kemudian hanya menampilkan 10 baris pertama dari ps aux dengan ```head -10```
 soal-3 done sir
 ## Soal-4
-kasih penjelasan disini..
+### A. Melihat summary dari data
+membuat sebuah fungsi yang akan menampilkan nama pokemon dengan Usage % tertinggi dan Raw Usage tertinggi
+```
+if [ "$2" == "--info" ]; then
+    echo ""
+    echo "Summary of $1"
+    highest_usage=$(awk -F, 'NR>1 {print $1, $2}' $1 | sort -k2 -nr | head -n 1)
+    highest_raw=$(awk -F, 'NR>1 {print $1, $3}' $1 | sort -k3 -nr | head -n 1)
+    echo -e "Highest Adjusted Usage: \e[32m$highest_usage\e[0m"
+    echo -e "Highest Raw Usage: \e[32m$highest_raw"
+fi
+```
+fungsi ini menganalisis dari file csv yang telah diberikan lalu mengsortir data tersebut sesuai dengan Usage % dan Raw Usage tertinggi dan menampilkan data tersebut. ```highest_usage``` akan menyimpan data Usage % tertinggi, sedangkan ```highest_raw``` akan menyimpan data Raw Usage tertinggi. penggunaan ```awk -F ,``` digunakan untuk membaca file csv dengan tanda pemisah ",". Dilanjutkan ```'NR>1 {print $1, $3}' $1``` akan melewatai baris pertama pada file lalu mengprint kolom 1 dan 3 dari argumen pertama yaitu ```pokemon_usage.csv```. ```sort -k3 -nr | head -n 1``` dipakai untuk menyortir kolom 3 berdasarkan numerik dari tertinggi hingga terendah lalu hanya menampilkan baris pertamanya saja.
+### B. Mengurutkan Pokemon berdasarkan data kolom
+```
+if [ "$2" == "--sort" ]; then
+  if [ -z "$3" ]; then
+    echo " "
+    echo -e "\e[31mError: Argumemt is empty."
+    exit 1
+  fi
+    echo " "
+    column=$3
+    case $column in
+        "usage") sort_column=2 ;;
+        "rawusage") sort_column=3 ;;
+        "name") sort_column=1 ;;
+        "Pokemon") sort_column=1 ;;
+        "pokemon") sort_column=1 ;;
+        "POKEMON") sort_column=1 ;;
+        "Name") sort_column=1 ;;
+        "NAME") sort_column=1 ;;
+        "hp") sort_column=6 ;;
+        "HP") sort_column=6 ;;
+        "Hp") sort_column=6 ;;
+        "atk") sort_column=7 ;;
+        "Atk") sort_column=7 ;;
+        "ATK") sort_column=7 ;;
+        "def") sort_column=8 ;;
+        "spatk") sort_column=9 ;;
+        "spdef") sort_column=10 ;;
+        "speed") sort_column=11 ;;
+        *) echo -e "\e[31mColumn \e[36m$3 \e[31minvalid!"; exit 1 ;;
+    esac
+    echo "Pokemon,Usage%,RawUsage,Type1,Type2,HP,Atk,Def,SpAtk,SpDef,Speed"
+    if [ "$sort_column" -eq 1 ]; then
+    awk -F, 'NR>1' "$1" | sort -t, -k$sort_column
+    else
+    awk -F, 'NR>1' "$1" | sort -t, -k{$sort_column},${sort_column} -nr  
+ fi
+fi
+```
+Switch case digunakan untuk menerima inputan dari user dalam bentuk argumen ketiga yang disimpan dalam variabel ```$column```. Kemudian input akan diubah menjadi sebuah angka yang disimpan dalam variabel ```$sort_column``` untuk menentukan kolom yang akan disorting
+### C. Mencari nama Pokemon tertentu
+```
+if [ "$2" == "--grep" ]; then
+  if [ -z "$3" ]; then
+    echo " "
+    echo -e "\e[31mError: Argument is empty."
+    exit 1
+  fi
+    name=$3
+    echo " "
+    if awk -F, -v nama="$name" '$1 ~ nama' "$1" | grep -q .; then
+       awk -F, -v nama="$name" '$1 ~ nama' "$1" | sort -t, -k2 -nr
+    else
+       echo -e "\e[31mName \e[36m$3 \e[31mnot found" 
+  fi
+fi
+```
+Mendeklarasikan variabel baru dalam awk dengan ```-v``` yang akan menampung input dari user yang kemudian dibandingkan dengan data dan ```$1 ~ nama``` akan mencari data yang memiliki unsur dari variabel ```nama```
+### D. Mencari Pokemon berdasarkan filter nama type
+```
+if [ "$2" == "--filter" ]; then
+  if [ -z "$3" ]; then
+    echo " "
+    echo -e "\e[31mError: Argument is empty."
+    exit 1
+  fi
+    type=$3
+    echo ""
+    if awk -F, -v tipe="$type" '$4 == tipe || $5 == tipe' "$1" | grep -q .; then
+       echo "Pokemon,Usage%,RawUsage,Type1,Type2,HP,Atk,Def,SpAtk,SpDef,Speed"
+       awk -F, -v tipe="$type" '($4 == tipe || $5 == tipe)' "$1" | sort -t, -k2 -nr
+    else
+       echo -e "\e[31mType \e[36m$3 \e[31mnot found"
+    fi
+fi
+```
+Pengecekan dilakukan untuk mengfilter tipe pada pokemon di mana ```$4 == tipe || $5 == tipe``` untuk memastikan apakah pada kolom 4 atau kolom 5 memiliki nama yang sama dengan input dari user. Jika ya, 
+``` awk -F, -v tipe="$type" '($4 == tipe || $5 == tipe)' "$1" | sort -t, -k2 -nr```maka akan sorting data berdasarkan tipe yang sama dengan input dari user dengan usage tertingi
+### E. Error handling
+```
+if [ -z "$3" ]; then
+    echo " "
+    echo -e "\e[31mError: Argument is empty."
+    exit 1
+  fi
+```
+Error handling dilakukan di tiap fungsi dengan melakukan pengecekan apakah terdapat argumen ketiga yang tidak terisi. Jika argumen ketiga tidak terisi, maka akan menampilkan tulisan "Error: Argument is empty.". 
+```
+ echo -e "\e[31mType \e[36m$3 \e[31mnot found"
+```
+Tidak lupa melakukan pengecekan apakah argumen yang diisi sesuai dengan yang dibutuhkan dan jika ternyata argumen tidak ditemukan, maka akan menampilkan "Argumen not found."
+
+
+### F. Help screen yang menarik
+Memberikan tampilan yang menarik dan juga simple guide dengan menambahkan warna pada tampilan ```--help```
+<img width="836" alt="Screenshot 2025-03-19 190015" src="https://github.com/user-attachments/assets/ce6c113c-520b-43ee-85b4-83e4e8efdf07" />
+
+
+
