@@ -41,7 +41,6 @@ H.Menggunakan Strings dan grep untuk mencari data. Menampilkan semua string yang
 I.strings reading_data.csv |grep "Chris Hemsworth"
 ```
 J. Menunjukkan jumlah buku-buku yang dibaca oleh Chris Hemsworth.
-```
 
 ## Soal-2
 ### A. “First Step in a New World”
@@ -142,7 +141,53 @@ crontab -l 2>/dev/null | grep "$CORE_SCRIPT\|$FRAG_SCRIPT" || echo "Tidak ada mo
 kemudian setelah kita membuat crontab manager, kita tambahkan 2 log file (core.log dan fragment.log) di folder ```./log/``` untuk menghubungkan ke prgram usage monitorinng kita tadi. didapatkan output sebagai berikut, 
 ![Screenshot 2025-03-20 045316](https://github.com/user-attachments/assets/94836556-7430-4e8f-a112-0e8fd3cf5a9a)
 ### I. “Irruption of New Color”
---
+kita disuruh untuk mwmbuat antarmuka utama yang memggabungkan semua elemen berbentuk ```terminal.sh```,
+```
+# Fungsi untuk registrasi
+register() {
+    echo -e "\n\e[90m=========== \e[33mREGIST PLAYER ACCOUNT\e[90m==========\e[0m"
+    read -p "Email: " email
+    read -p "Username: " username
+    read -sp "Password: " password
+    echo
+    ./register.sh "$email" "$username" "$password"
+}
+
+# Fungsi untuk login
+login() {
+    echo -e "\n\e[90m========== \e[33mLOGIN PLAYER ACCOUNT \e[90m==========\e[0m"
+    read -p "Email: " email
+    read -sp "Password: " password
+    echo
+    ./login.sh "$email" "$password"
+}
+delete() {
+    echo -e "\n\e[90m========== \e[33mDELETE PLAYER ACCOUNT \e[90m==========\e[0m"
+    read -p "Email: " email
+    read -sp "Password: " password
+    echo
+    ./delete.sh "$email" "$password"
+}
+# Menu utama
+while true; do
+    echo -e "\n\e[90m========== \e[33mARCACEA PLAYER SYSTEM \e[90m==========\e[0m"
+    echo -e "\e[34m1. Register"
+    echo    "2. Login"
+    echo    "3. Delete"
+    echo -e "4. Exit\e[0m"
+    read -p "Choose Option (1-4): " choice
+
+    case $choice in
+        1) register ;;
+        2) login ;;
+        3) delete ;;
+        4) echo "Shutting down..."; exit 0 ;;
+        *) echo -e "\e[31mOption not valid! Please choose 1-4." ;;
+    esac
+done
+```
+```\e[90m``` adalah kode warna ANSI untuk abu-abu (gray/light black) sedangkan ```\e[33m``` adalah kode warna ANSI untuk kuning (yellow). Berikut adalah tampilan dari ```terminal.sh``` :                                                                             
+![image](https://github.com/user-attachments/assets/bd156aff-e195-46f2-9f2e-f63618e3709c)
 
 ## Soal-3
 Pada soal ini kita diberikan 5 bentuk program yakni, "Speak to Me", "On the Run", "Time", "Money", dan "Brain Damage".
