@@ -12,27 +12,27 @@
 ## PENJELASAN
 
 ## Soal-1
-### A. Membuat direktori && memasukkan ke direktori
+A. Membuat direktori && memasukkan ke direktori
 ```
 mkdir soal_1 && cd soal_1
 ```
-## B. Membuat File poppo_siroyo.sh
+B. Membuat File poppo_siroyo.sh
 ```
 nano poppo_siroyo.sh
 ```
-### C. Menjalankan script
+C. Menjalankan script
 ```
 ./nano poopo_siroyo.sh
 ```
-### D. Izin execute pada script
+ D. Izin execute pada script
 ```
 chmod +x poppo_siroyo.sh
 ```
-### E. Menjalakan script kembali
+E. Menjalakan script kembali
 ```
 ./poppo_siroyo.sh
 ```
-### D. Melihat isi file CSV
+D. Melihat isi file CSV
 ```
 more reading_data.csv
 ```
