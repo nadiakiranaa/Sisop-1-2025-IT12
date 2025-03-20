@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Help Screen
-if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ "$2" == "-h" ] || [ "$2" == "--help" ]; then
+if [ "$1" == "" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ "$2" == "-h" ] || [ "$2" == "--help" ]; then
     echo -e "\e[33m                                   ,'\                               \e[0m"
     echo -e "\e[33m     _.----.        ____         ,'  _\   ___    ___     ____        \e[0m"
     echo -e "\e[33m _,-'       \`.     |    |  /\`.   \\,-'    |   \\  /   |   |    \\  |\`.  \e[0m"
@@ -44,11 +44,10 @@ function display_table {
 
 # Sorting
 if [ "$2" == "--sort" ]; then
-  if [ -z "$3" ]; then
-    echo " "
-    echo -e "\e[31mError: Argumemt is empty."
+    if [ $# -ne 3 ]; then
+    echo -e "\e[31mWARNING!!!  Type: ./pokemon_analysis.sh pokemon_usage.csv --sort \e[32m<column>"
     exit 1
-  fi
+    fi
     echo " "
     column=$3
     case $column in
@@ -76,17 +75,16 @@ if [ "$2" == "--sort" ]; then
     if [ "$sort_column" -eq 1 ]; then
     awk -F, 'NR>1' "$1" | sort -t, -k$sort_column
     else
-    awk -F, 'NR>1' "$1" | sort -t, -k{$sort_column},${sort_column} -nr  
+    awk -F, 'NR>1' "$1" | sort -t, -k$sort_column -nr  
  fi
 fi
 
 # Grep <name>
 if [ "$2" == "--grep" ]; then
-  if [ -z "$3" ]; then
-    echo " "
-    echo -e "\e[31mError: Argument is empty."
+    if [ $# -ne 3 ]; then
+    echo -e "\e[31mWARNING!!!  Type: ./pokemon_analysis.sh pokemon_usage.csv --grep \e[32m<name>"
     exit 1
-  fi
+    fi
     name=$3
     echo " "
     if awk -F, -v nama="$name" '$1 ~ nama' "$1" | grep -q .; then
@@ -98,11 +96,10 @@ fi
 
 # Filter <type>
 if [ "$2" == "--filter" ]; then
-  if [ -z "$3" ]; then
-    echo " "
-    echo -e "\e[31mError: Argument is empty."
+    if [ $# -ne 3 ]; then
+    echo -e "\e[31mWARNING!!!  Type: ./pokemon_analysis.sh pokemon_usage.csv --filter \e[32m<type>"
     exit 1
-  fi
+    fi
     type=$3
     echo ""
     if awk -F, -v tipe="$type" '$4 == tipe || $5 == tipe' "$1" | grep -q .; then
