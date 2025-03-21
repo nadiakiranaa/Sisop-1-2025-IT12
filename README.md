@@ -12,35 +12,49 @@
 ## PENJELASAN
 
 ## Soal-1
-A. Membuat direktori && memasukkan ke direktori
+a. Membuat direktori && memasukkan ke direktori
 ```
 mkdir soal_1 && cd soal_1
 ```
-B. Membuat File poppo_siroyo.sh
+b. Membuat File poppo_siroyo.sh
 ```
 nano poppo_siroyo.sh
 ```
-C. Menjalankan script
+c. Menjalankan script
 ```
 ./nano poopo_siroyo.sh
 ```
- D. Izin execute pada script
+### Soal Tipe A
+Menunjukkan jumlah buku-buku yang dibaca oleh Chris Hemsworth.
 ```
-chmod +x poppo_siroyo.sh
+awk -F',' '$2 ~ "Chris Hemsworth" {count++} END {print "Chris Hemsworth membaca " count " buku "}' reading_data.
+csv
 ```
-F. Menjalakan script kembali
+### Soal Tipe B
+Menghitung rata-rata dari pengguna yang menggunakan Tablet
 ```
-./poppo_siroyo.sh
+awk -F',' '$8 == "Tablet" {sum += $6; count++} END {if (count > 0) print "Rata-rata durasi membaca dengan Tablet adalah "sum / count " buku "; else print "0"}' reading_data.csv
 ```
-G. Melihat isi file CSV
+### Soal Tipe C
+Mencari pembaca dengan rating tertinggi 
 ```
-more reading_data.csv
+ awk -F',' 'NR > 1 {if ($7 > max) {title = $3; max = $7; name = $2}} END {print "Pembaca dengan rating tertinggi:
+ " name, "-", title, "-", max}' reading_data.csv
 ```
-H.Menggunakan Strings dan grep untuk mencari data. Menampilkan semua string yang dapat dibaca dari file reading_data.csv kemudian menyaring output untuk mencari baris yang mengandung nama "Chris Hemsworth".
+### Soal Tipe D 
+Menganalisi genre paling populer di Asia Tenggara
 ```
-I.strings reading_data.csv |grep "Chris Hemsworth"
+ awk -F',' '$9 == "Asia" && $5 > "2023-12-31" {genres[$4]++} END {
+        max = 0;
+        for (genre in genres) {
+            if (genres[genre] > max) {
+                max = genres[genre];
+                most_popular = genre;
+            }
+        }
+        print " Genre paling populer di Asia setelah 2023 adalah " most_popular, "dengan " max " buku "
+    }' reading_data.csv
 ```
-J. Menunjukkan jumlah buku-buku yang dibaca oleh Chris Hemsworth.
 
 ## Soal-2
 ### A. “First Step in a New World”
