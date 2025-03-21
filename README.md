@@ -370,11 +370,10 @@ fungsi ini menganalisis dari file csv yang telah diberikan lalu mengsortir data 
 ### B. Mengurutkan Pokemon berdasarkan data kolom
 ```
 if [ "$2" == "--sort" ]; then
-  if [ -z "$3" ]; then
-    echo " "
-    echo -e "\e[31mError: Argumemt is empty."
+  if [ $# -ne 3 ]; then
+    echo -e "\e[31mWARNING!!!  Type: ./pokemon_analysis.sh pokemon_usage.csv --sort \e[32m<column>"
     exit 1
-  fi
+    fi
     echo " "
     column=$3
     case $column in
@@ -402,7 +401,7 @@ if [ "$2" == "--sort" ]; then
     if [ "$sort_column" -eq 1 ]; then
     awk -F, 'NR>1' "$1" | sort -t, -k$sort_column
     else
-    awk -F, 'NR>1' "$1" | sort -t, -k{$sort_column},${sort_column} -nr  
+    awk -F, 'NR>1' "$1" | sort -t, -k$sort_column -nr  
  fi
 fi
 ```
@@ -410,11 +409,10 @@ Switch case digunakan untuk menerima inputan dari user dalam bentuk argumen keti
 ### C. Mencari nama Pokemon tertentu
 ```
 if [ "$2" == "--grep" ]; then
-  if [ -z "$3" ]; then
-    echo " "
-    echo -e "\e[31mError: Argument is empty."
+  if [ $# -ne 3 ]; then
+    echo -e "\e[31mWARNING!!!  Type: ./pokemon_analysis.sh pokemon_usage.csv --grep \e[32m<name>"
     exit 1
-  fi
+    fi
     name=$3
     echo " "
     if awk -F, -v nama="$name" '$1 ~ nama' "$1" | grep -q .; then
@@ -428,11 +426,10 @@ Mendeklarasikan variabel baru dalam awk dengan ```-v``` yang akan menampung inpu
 ### D. Mencari Pokemon berdasarkan filter nama type
 ```
 if [ "$2" == "--filter" ]; then
-  if [ -z "$3" ]; then
-    echo " "
-    echo -e "\e[31mError: Argument is empty."
+  if [ $# -ne 3 ]; then
+    echo -e "\e[31mWARNING!!!  Type: ./pokemon_analysis.sh pokemon_usage.csv --filter \e[32m<type>"
     exit 1
-  fi
+    fi
     type=$3
     echo ""
     if awk -F, -v tipe="$type" '$4 == tipe || $5 == tipe' "$1" | grep -q .; then
@@ -447,13 +444,12 @@ Pengecekan dilakukan untuk mengfilter tipe pada pokemon di mana ```$4 == tipe ||
 ``` awk -F, -v tipe="$type" '($4 == tipe || $5 == tipe)' "$1" | sort -t, -k2 -nr```maka akan sorting data berdasarkan tipe yang sama dengan input dari user dengan usage tertingi
 ### E. Error handling
 ```
-if [ -z "$3" ]; then
-    echo " "
-    echo -e "\e[31mError: Argument is empty."
+if [ $# -ne 3 ]; then
+    echo -e "\e[31mWARNING!!!  Type: ./pokemon_analysis.sh pokemon_usage.csv --filter \e[32m<type>"
     exit 1
-  fi
+    fi
 ```
-Error handling dilakukan di tiap fungsi dengan melakukan pengecekan apakah terdapat argumen ketiga yang tidak terisi. Jika argumen ketiga tidak terisi, maka akan menampilkan tulisan "Error: Argument is empty.". 
+Error handling dilakukan di tiap fungsi dengan melakukan pengecekan apakah terdapat argumen ketiga yang tidak terisi. Jika argumen ketiga tidak terisi, maka akan menampilkan tulisan "WARNING!!!". 
 ```
  echo -e "\e[31mType \e[36m$3 \e[31mnot found"
 ```
