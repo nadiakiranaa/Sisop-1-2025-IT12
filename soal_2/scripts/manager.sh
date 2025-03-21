@@ -1,35 +1,42 @@
 #!/bin/bash
 
-LOG_FILE_DIR= "$HOME/log"
-CORE_SCRIPT="$HOME/scripts/core_monitor.sh"
-FRAG_SCRIPT="$HOME/scripts/frag_monitor.sh"
-CORE_JOB_FILE="$HOME/.cron_jobs"
+LOG_FILE_DIR="$HOME/College/sisop/MODUL1/Sisop-1-2025-IT12/soal_2/scripts/logs"
+CORE_SCRIPT="$HOME/College/sisop/MODUL1/Sisop-1-2025-IT12/soal_2/scripts/core_monitor.sh"
+FRAG_SCRIPT="$HOME/College/sisop/MODUL1/Sisop-1-2025-IT12/soal_2/scripts/frag_monitor.sh"
 
-mkdir -p "LOG_DIR"
+mkdir -p "$LOG_FILE_DIR"
 
 add_cpu_monitor(){
-(crontab -l 2>/dev/null; echo "* * * * * $CORE_SCRIPT") | crontab -
-echo "CPU monitoring added to crontab."
+    if [[ ! -f "$CORE_SCRIPT" ]]; then
+        echo "Error: $CORE_SCRIPT tidak ditemukan!"
+        return 1
+    fi
+    (crontab -l 2>/dev/null; echo "* * * * * $CORE_SCRIPT") | crontab -
+    echo "CPU monitoring added to crontab."
 }
 
 add_ram_monitor(){
-(crontab -l 2>/dev/null; echo "* * * * * $FRAG_SCRIPT") | crontab -
-echo "RAM monitoring added to crontab."
+    if [[ ! -f "$FRAG_SCRIPT" ]]; then
+        echo "Error: $FRAG_SCRIPT tidak ditemukan!"
+        return 1
+    fi
+    (crontab -l 2>/dev/null; echo "* * * * * $FRAG_SCRIPT") | crontab -
+    echo "RAM monitoring added to crontab."
 }
 
 rm_cpu_monitor(){
-crontab -l 2>/dev/null | grep -v "$CORE_SCRIPT" | crontab -
-echo "CPU monitoring removed from corntab."
+    crontab -l 2>/dev/null | grep -v "$CORE_SCRIPT" | crontab -
+    echo "CPU monitoring removed from crontab."
 }
 
 rm_ram_monitor(){
-crontab -l 2>/dev/null | grep -v "$FRAG_SCRIPT" | crontab -
-echo "RAM monitoring removed from corntab."
+    crontab -l 2>/dev/null | grep -v "$FRAG_SCRIPT" | crontab -
+    echo "RAM monitoring removed from crontab."
 }
 
 view_active_job(){
-echo "Scheduled Jobs B**:"
-crontab -l 2>/dev/null | grep "$CORE_SCRIPT\|$FRAG_SCRIPT" || echo "Tidak ada monitoring yang aktif sir"
+    echo "Scheduled Jobs:"
+    crontab -l 2>/dev/null | grep "$CORE_SCRIPT\|$FRAG_SCRIPT" || echo "Tidak ada monitoring yang aktif."
 }
 
 while true; do
@@ -51,10 +58,7 @@ while true; do
         3) rm_cpu_monitor ;;
         4) rm_ram_monitor ;;
         5) view_active_job ;;
-        6) echo "Keluar ArCaea Terminal."
-           exit 0 
-	   ;;
-        *) echo "Invalid option!"
-	   ;;
+        6) echo "Keluar Arcaea Terminal."; exit 0 ;;
+        *) echo "Invalid option!" ;;
     esac
 done

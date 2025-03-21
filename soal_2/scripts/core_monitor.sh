@@ -1,12 +1,5 @@
-#!/bin/bash
+LOG_FILE="$HOME/College/sisop/MODUL1/Sisop-1-2025-IT12/soal_2/scripts/logs/core.log"
+CPU_USAGE=$(top -bn1 | grep "Cpu(s)" | awk '{print $2}')
+CPU_MODEL=$(lscpu | grep "Model name" | awk -F ':' '{print $2}' | sed 's/^[ \t]*//')
 
-LOG_DIR="$HOME/log"
-LOG_FILE="$HOME/log/core.log"
-
-mkdir -p "$LOG_DIR"
-
-TIME=$(date +"%Y-%m-%d %H:%M:%S")
-CPUU=$(top -bn1 | grep "Cpu(s)" | awk '{print 100 - $8}')
-CPUM=$(lscpu | grep -m1 "Model name" | cut -d ':' -f2 | sed 's/^ *//')
-
-echo "[$TIME] - Core Usage [$CPUU%] - Terminal Model [$CPUM]" >> "$LOG_FILE"
+echo "$(date '+%Y-%m-%d %H:%M:%S') - Core Usage [$CPU_USAGE%] - Terminal Model [$CPU_MODEL]" >> "$LOG_FILE"

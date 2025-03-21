@@ -1,6 +1,10 @@
 #!/bin/bash
 #register.sh
 
+DATA_USER="$HOME/College/sisop/MODUL1/Sisop-1-2025-IT12/soal_2/data/player.csv"
+
+echo "email,username,password_hash" > "$DATA_USER"
+
 # Static salt untuk hashing
 SALT="NHK_ArcadiaSalty"
 

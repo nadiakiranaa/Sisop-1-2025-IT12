@@ -1,5 +1,9 @@
 #!/bin/bash
 
+DATA_USER="$HOME/College/sisop/MODUL1/Sisop-1-2025-IT12/soal_2/data"
+
+mkdir -p "$DATA_USER"
+
 # Fungsi untuk registrasi
 register() {
     echo -e "\n\e[90m=========== \e[33mREGIST PLAYER ACCOUNT\e[90m==========\e[0m"
