@@ -56,6 +56,9 @@ Menganalisi genre paling populer di Asia Tenggara
     }' reading_data.csv
 ```
 ### Dokumentasi
+![image](https://github.com/user-attachments/assets/a21583b1-d57e-4969-8c1a-d27e99965701)
+![image](https://github.com/user-attachments/assets/a2921d85-ac14-4a00-979a-83093e4bad18)
+
 
 
 ## Soal-2
